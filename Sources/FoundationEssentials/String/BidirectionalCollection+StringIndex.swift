@@ -12,7 +12,7 @@
 
 extension BidirectionalCollection where Index == String.Index {
     internal func _alignIndex(roundingDown i: Index) -> Index {
-        return i < endIndex ? index(before: index(after: i)) : i
+        i < endIndex ? index(before: index(after: i)) : i
     }
 
     internal func _alignIndex(roundingUp i: Index) -> Index {
