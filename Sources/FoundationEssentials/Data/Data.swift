@@ -27,7 +27,7 @@ internal func __DataInvokeDeallocatorVirtualMemory(_ mem: UnsafeMutableRawPointe
 import Glibc
 
 private func malloc_good_size(_ size: Int) -> Int {
-    return size
+    size
 }
 
 #endif
@@ -95,7 +95,7 @@ internal final class __DataStorage : @unchecked Sendable {
     }
 
     static func reallocate(_ ptr: UnsafeMutableRawPointer, _ newSize: Int) -> UnsafeMutableRawPointer? {
-        return realloc(ptr, newSize);
+        realloc(ptr, newSize);
     }
 #endif // !FOUNDATION_FRAMEWORK
 
@@ -118,7 +118,7 @@ internal final class __DataStorage : @unchecked Sendable {
 
     @inlinable // This is @inlinable as trivially forwarding, and does not escape the _DataStorage boundary layer.
     static func shouldAllocateCleared(_ size: Int) -> Bool {
-        return (size > (128 * 1024))
+        (size > (128 * 1024))
     }
 
     @usableFromInline var _bytes: UnsafeMutableRawPointer?
@@ -130,29 +130,29 @@ internal final class __DataStorage : @unchecked Sendable {
 
     @inlinable // This is @inlinable as trivially computable.
     var bytes: UnsafeRawPointer? {
-        return UnsafeRawPointer(_bytes)?.advanced(by: -_offset)
+        UnsafeRawPointer(_bytes)?.advanced(by: -_offset)
     }
 
     @inlinable // This is @inlinable despite escaping the _DataStorage boundary layer because it is generic and trivially forwarding.
     @discardableResult
     func withUnsafeBytes<Result>(in range: Range<Int>, apply: (UnsafeRawBufferPointer) throws -> Result) rethrows -> Result {
-        return try apply(UnsafeRawBufferPointer(start: _bytes?.advanced(by: range.lowerBound - _offset), count: Swift.min(range.upperBound - range.lowerBound, _length)))
+        try apply(UnsafeRawBufferPointer(start: _bytes?.advanced(by: range.lowerBound - _offset), count: Swift.min(range.upperBound - range.lowerBound, _length)))
     }
 
     @inlinable // This is @inlinable despite escaping the _DataStorage boundary layer because it is generic and trivially forwarding.
     @discardableResult
     func withUnsafeMutableBytes<Result>(in range: Range<Int>, apply: (UnsafeMutableRawBufferPointer) throws -> Result) rethrows -> Result {
-        return try apply(UnsafeMutableRawBufferPointer(start: _bytes!.advanced(by:range.lowerBound - _offset), count: Swift.min(range.upperBound - range.lowerBound, _length)))
+        try apply(UnsafeMutableRawBufferPointer(start: _bytes!.advanced(by:range.lowerBound - _offset), count: Swift.min(range.upperBound - range.lowerBound, _length)))
     }
 
     @inlinable // This is @inlinable as trivially computable.
     var mutableBytes: UnsafeMutableRawPointer? {
-        return _bytes?.advanced(by: -_offset)
+        _bytes?.advanced(by: -_offset)
     }
 
     @inlinable // This is @inlinable as trivially computable.
     var capacity: Int {
-        return _capacity
+        _capacity
     }
 
     @inlinable // This is @inlinable as trivially computable.
@@ -169,7 +169,7 @@ internal final class __DataStorage : @unchecked Sendable {
     var isExternallyOwned: Bool {
         // all __DataStorages will have some sort of capacity, because empty cases hit the .empty enum _Representation
         // anything with 0 capacity means that we have not allocated this pointer and consequently mutation is not ours to make.
-        return _capacity == 0
+        _capacity == 0
     }
 
     @usableFromInline // This is not @inlinable as it is a non-trivial, non-generic function.
@@ -319,7 +319,7 @@ internal final class __DataStorage : @unchecked Sendable {
 
     @inlinable // This is @inlinable despite escaping the __DataStorage boundary layer because it is trivially computed.
     func get(_ index: Int) -> UInt8 {
-        return _bytes!.advanced(by: index - _offset).assumingMemoryBound(to: UInt8.self).pointee
+        _bytes!.advanced(by: index - _offset).assumingMemoryBound(to: UInt8.self).pointee
     }
 
     @inlinable // This is @inlinable despite escaping the _DataStorage boundary layer because it is trivially computed.
@@ -501,7 +501,7 @@ internal final class __DataStorage : @unchecked Sendable {
 
     @inlinable // This is @inlinable despite escaping the __DataStorage boundary layer because it is trivially computed.
     func mutableCopy(_ range: Range<Int>) -> __DataStorage {
-        return __DataStorage(bytes: _bytes?.advanced(by: range.lowerBound - _offset), length: range.upperBound - range.lowerBound, copy: true, deallocator: nil, offset: range.lowerBound)
+        __DataStorage(bytes: _bytes?.advanced(by: range.lowerBound - _offset), length: range.upperBound - range.lowerBound, copy: true, deallocator: nil, offset: range.lowerBound)
     }
 }
 
@@ -532,11 +532,11 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as trivially computable.
         static func canStore(count: Int) -> Bool {
-            return count <= MemoryLayout<Buffer>.size
+            count <= MemoryLayout<Buffer>.size
         }
 
         static var maximumCapacity: Int {
-            return MemoryLayout<Buffer>.size
+            MemoryLayout<Buffer>.size
         }
 
         @inlinable // This is @inlinable as a convenience initializer.
@@ -584,7 +584,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as trivially computable.
         var capacity: Int {
-            return MemoryLayout<Buffer>.size
+            MemoryLayout<Buffer>.size
         }
 
         @inlinable // This is @inlinable as trivially computable.
@@ -604,12 +604,12 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as trivially computable.
         var startIndex: Int {
-            return 0
+            0
         }
 
         @inlinable // This is @inlinable as trivially computable.
         var endIndex: Int {
-            return count
+            count
         }
 
         @inlinable // This is @inlinable as a generic, trivially forwarding function.
@@ -759,7 +759,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as trivially computable.
         static func canStore(count: Int) -> Bool {
-            return count < HalfInt.max
+            count < HalfInt.max
         }
 
         @inlinable // This is @inlinable as a convenience initializer.
@@ -831,17 +831,17 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as trivially computable.
         var startIndex: Int {
-            return Int(slice.lowerBound)
+            Int(slice.lowerBound)
         }
 
         @inlinable // This is @inlinable as trivially computable.
         var endIndex: Int {
-            return Int(slice.upperBound)
+            Int(slice.upperBound)
         }
 
         @inlinable // This is @inlinable as trivially computable.
         var capacity: Int {
-            return storage.capacity
+            storage.capacity
         }
 
         @inlinable // This is @inlinable as trivially computable (and inlining may help avoid retain-release traffic).
@@ -885,7 +885,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as a generic, trivially forwarding function.
         func withUnsafeBytes<Result>(_ apply: (UnsafeRawBufferPointer) throws -> Result) rethrows -> Result {
-            return try storage.withUnsafeBytes(in: range, apply: apply)
+            try storage.withUnsafeBytes(in: range, apply: apply)
         }
 
         @inlinable // This is @inlinable as a generic, trivially forwarding function.
@@ -976,17 +976,17 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable @inline(__always) // This is @inlinable as trivially forwarding.
         var lowerBound: Int {
-            return range.lowerBound
+            range.lowerBound
         }
 
         @inlinable @inline(__always) // This is @inlinable as trivially forwarding.
         var upperBound: Int {
-            return range.upperBound
+            range.upperBound
         }
 
         @inlinable @inline(__always) // This is @inlinable as trivially computable.
         var count: Int {
-            return range.upperBound - range.lowerBound
+            range.upperBound - range.lowerBound
         }
 
         @inlinable @inline(__always) // This is @inlinable as a trivial initializer.
@@ -1050,17 +1050,17 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as trivially forwarding.
         var startIndex: Int {
-            return slice.range.lowerBound
+            slice.range.lowerBound
         }
 
         @inlinable // This is @inlinable as trivially forwarding.
         var endIndex: Int {
-          return slice.range.upperBound
+          slice.range.upperBound
         }
 
         @inlinable // This is @inlinable as trivially forwarding.
         var capacity: Int {
-            return storage.capacity
+            storage.capacity
         }
 
         @inlinable // This is @inlinable as trivially computable.
@@ -1090,12 +1090,12 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
         @inlinable // This is @inlinable as it is trivially forwarding.
         var range: Range<Int> {
-            return slice.range
+            slice.range
         }
 
         @inlinable // This is @inlinable as a generic, trivially forwarding function.
         func withUnsafeBytes<Result>(_ apply: (UnsafeRawBufferPointer) throws -> Result) rethrows -> Result {
-            return try storage.withUnsafeBytes(in: range, apply: apply)
+            try storage.withUnsafeBytes(in: range, apply: apply)
         }
 
         @inlinable // This is @inlinable as a generic, trivially forwarding function.
@@ -1946,7 +1946,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
     @inlinable // This is @inlinable as trivially computable.
     public var regions: CollectionOfOne<Data> {
-        return CollectionOfOne(self)
+        CollectionOfOne(self)
     }
 
     /// Access the bytes in the data.
@@ -1961,7 +1961,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
     @inlinable // This is @inlinable as a generic, trivially forwarding function.
     public func withUnsafeBytes<ResultType>(_ body: (UnsafeRawBufferPointer) throws -> ResultType) rethrows -> ResultType {
-        return try _representation.withUnsafeBytes(body)
+        try _representation.withUnsafeBytes(body)
     }
 
     /// Mutate the bytes in the data.
@@ -1977,7 +1977,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
     @inlinable // This is @inlinable as a generic, trivially forwarding function.
     public mutating func withUnsafeMutableBytes<ResultType>(_ body: (UnsafeMutableRawBufferPointer) throws -> ResultType) rethrows -> ResultType {
-        return try _representation.withUnsafeMutableBytes(body)
+        try _representation.withUnsafeMutableBytes(body)
     }
 
     // MARK: -
@@ -2313,12 +2313,12 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
 
     @inlinable // This is @inlinable as trivially computable.
     public func index(before i: Index) -> Index {
-        return i - 1
+        i - 1
     }
 
     @inlinable // This is @inlinable as trivially computable.
     public func index(after i: Index) -> Index {
-        return i + 1
+        i + 1
     }
 
     @inlinable // This is @inlinable as trivially computable.
@@ -2345,7 +2345,7 @@ public struct Data : Equatable, Hashable, RandomAccessCollection, MutableCollect
     /// The iterator will increment byte-by-byte.
     @inlinable // This is @inlinable as trivially computable.
     public func makeIterator() -> Data.Iterator {
-        return Iterator(self, at: startIndex)
+        Iterator(self, at: startIndex)
     }
 
     public struct Iterator : IteratorProtocol, Sendable {
@@ -2545,12 +2545,12 @@ extension Data {
 extension Data : CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
     /// A human-readable description for the data.
     public var description: String {
-        return "\(self.count) bytes"
+        "\(self.count) bytes"
     }
 
     /// A human-readable debug description for the data.
     public var debugDescription: String {
-        return self.description
+        self.description
     }
 
     public var customMirror: Mirror {
