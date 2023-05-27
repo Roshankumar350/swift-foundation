@@ -48,7 +48,7 @@ public struct AttributedSubstring : Sendable {
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, *)
 extension AttributedSubstring {
     public var base: AttributedString {
-        return AttributedString(_guts)
+        AttributedString(_guts)
     }
 
 
@@ -155,15 +155,15 @@ extension AttributedSubstring : AttributedStringProtocol {
     }
 
     public var characters : AttributedString.CharacterView {
-        return AttributedString.CharacterView(_guts, startIndex ..< endIndex)
+        AttributedString.CharacterView(_guts, startIndex ..< endIndex)
     }
 
     public var unicodeScalars : AttributedString.UnicodeScalarView {
-        return AttributedString.UnicodeScalarView(_guts, startIndex ..< endIndex)
+        AttributedString.UnicodeScalarView(_guts, startIndex ..< endIndex)
     }
 
     public subscript<R: RangeExpression>(bounds: R) -> AttributedSubstring where R.Bound == AttributedString.Index {
-        return AttributedSubstring(_guts, bounds.relative(to: characters))
+        AttributedSubstring(_guts, bounds.relative(to: characters))
     }
 }
 
